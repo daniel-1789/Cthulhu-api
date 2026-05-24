@@ -3,21 +3,47 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field
 
 
-class ItemCreate(BaseModel):
-    """Payload for POST /items."""
+class AdventureBrief(BaseModel):
+    """Lightweight adventure reference for embedding in other responses."""
 
-    name: str = Field(..., max_length=255, examples=["Widget"])
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    name: str
+
+
+class AdventureCreate(BaseModel):
+    """Payload for POST /adventures."""
+
+    name: str = Field(..., max_length=255, examples=["The Dunwich Horror"])
     description: str | None = Field(None, max_length=1024)
-    price: float = Field(..., ge=0, examples=[9.99])
+    date_played: datetime | None = None
 
-
-class ItemRead(BaseModel):
-    """Item as returned by the API."""
+class AdventureRead(BaseModel):
+    """Adventure as returned by the API."""
 
     model_config = ConfigDict(from_attributes=True)
 
     id: int
     name: str
     description: str | None
-    price: float
+    date_played: datetime | None
     created_at: datetime
+
+
+class NPCCreate(BaseModel):
+    """Payload for POST /npcs."""
+
+    name: str = Field(..., max_length=255, examples=["Henry Armitage"])
+    description: str | None = Field(None, max_length=1024)
+
+
+class NPCRead(BaseModel):
+    """NPC as returned by the API, with the adventures they appear in."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    name: str
+    description: str | None
+    adventures: list[AdventureBrief]

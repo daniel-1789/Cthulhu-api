@@ -41,7 +41,7 @@ brew services start mysql
 Create the database and (optionally) a dedicated user. The defaults in `.env.example` assume the root account with password `root` — fine for local dev, change for anything real:
 
 ```shell
-mysql -uroot -e "CREATE DATABASE app;"
+mysql -uroot -e "CREATE DATABASE cthulhu;"
 mysql -uroot -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';"
 ```
 
